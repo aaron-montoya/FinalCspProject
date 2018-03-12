@@ -20,7 +20,7 @@ public class GUIFrame extends JFrame
 	{
 		this.setContentPane(appPanel);
 		this.setTitle("Game of Life");
-		this.setSize(500, 600);
+		this.setSize(600, 600);
 		this.setVisible(true);
 	}
 }

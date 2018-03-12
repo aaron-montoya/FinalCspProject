@@ -1,67 +1,191 @@
 package view;
 
 import javax.swing.*;
-import controller.Controller;
+import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import controller.Controller;
+import controller.CellButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class GUIPanel extends JPanel
 {
 	private Controller appController;
-	private JButton firstButton;
-	private SpringLayout appLayout;
+	private GridLayout appLayout;
+	
+	ArrayList<CellButton> buttons = new ArrayList();
+	
+	private CellButton buttonStart;
+	private CellButton buttonEnd;
 	
 	public GUIPanel(Controller controller)
 	{
 		super();
-		this.appController = controller;
-		firstButton = new JButton("Start");
-		appLayout = new SpringLayout();
 		
+		try
+		{
+		   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		}
+		catch(Exception e)
+		{
+		  e.printStackTrace();
+		}
+		
+		this.appController = controller;
+		appLayout = new GridLayout(10, 10);
+		
+		buttonStart = new CellButton(1, false, "");
+		buttonStart.setBackground(Color.green);
+		buttonStart.setOpaque(true);
+		
+		buttonEnd = new CellButton(1, false, "");
+		buttonEnd.setBackground(Color.red);
+		buttonEnd.setOpaque(true);
+		
+		setButtonColor();
+		createButtons();
 		setupPanel();
 		setupLayout();
 		setupListeners();
-		drawGrid();
 	}
+	
+	private void setButtonColor()
+	{
+		for(int index = 0; index < buttons.size(); index++)
+			{
+				if(buttons.get(index).getState() == false)
+				{
+					buttons.get(index).setBackground(Color.BLACK);
+				}
+				else if(buttons.get(index).getState() == true)
+				{
+					buttons.get(index).setBackground(Color.WHITE);
+				}
+			}
+	}
+	
+	public ArrayList getButtons()
+	{
+		return buttons;
+	}
+	
+	
+	private void createButtons()
+	{
+		for(int index = 0; index < 99; index++)
+		{
+			CellButton sample = new CellButton(1, false, Integer.toString(index));
+			sample.setBackground(Color.BLACK);
+			sample.setOpaque(true);
+			buttons.add(sample);
+		}
+		
+		for(CellButton button : buttons)
+		{
+			this.add(button);
+		}
+	}
+	
 	
 	private void setupPanel()
 	{
 		this.setLayout(appLayout);
-		this.add(firstButton);
+		this.setBackground(Color.DARK_GRAY);
+		this.add(buttonStart);
+		this.add(buttonEnd);
 	}
 	
-	private void drawGrid()
-	{
-		for(int row = 0; row < 500; row+=25)
-		{
-			for(int col = 0; col < 500; col+=25)
-			{
-				//(row, col, row+25, col+25);
-			}
-		}
-	}
 	
 	private void setupLayout()
 	{
 		
 	}
 	
+	
 	private void setupListeners()
 	{
+		for(CellButton button : buttons)
+		{
+			button.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent click)
+				{
+					boolean state = ((CellButton) click.getSource()).getState();
+					((CellButton) click.getSource()).setState(!state);
+					setButtonColor();
+				}
+			});
+		}
 		
-	}
-	
-	@Override
-	protected void paintComponent(Graphics currentGraphics)
-	{
-		super.paintComponent(currentGraphics);
+		buttonStart.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent click)
+			{
+				int neighbors = 0;
+				for(int count = 0; count < buttons.size(); count++)
+				{
+					if (buttons.get(count).getState() == true)
+					{
+						if (buttons.get(count - 12).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count - 11).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count - 10).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count - 1).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count + 1).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count + 10).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count + 11).getState() == false)
+						{
+							neighbors++;
+						}
+						if (buttons.get(count + 12).getState() == false)
+						{
+							neighbors++;
+						}
+					}
+				}
+				buttonStart.setText(Integer.toString(neighbors));
+				
+				if (neighbors < 2 || neighbors > 3)
+				{
+					for(CellButton button : buttons)
+					{
+						((CellButton) click.getSource()).setState(false);
+						setButtonColor();
+					}
+				}
+				
+				
+			}
+		});
 		
-		Graphics2D mainGraphics = (Graphics2D) currentGraphics;
-		mainGraphics.setStroke(new BasicStroke(2));
-		mainGraphics.setColor(Color.white);
-		
-		mainGraphics.drawRect(0, 0, 25, 25);
+		buttonEnd.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent click)
+			{
+				
+			}
+		});
 	}
 	
 }
