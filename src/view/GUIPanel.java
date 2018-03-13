@@ -128,40 +128,42 @@ public class GUIPanel extends JPanel
 				int neighbors = 0;
 				for(int count = 0; count < buttons.size(); count++)
 				{
-					if (buttons.get(count).getState() == true)
+					if (buttons.get(count).getBackground() == Color.WHITE)
 					{
-						if (buttons.get(count - 12).getState() == false)
+						if (buttons.get(count - 12).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 11).getState() == false)
+						if (buttons.get(count - 11).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 10).getState() == false)
+						if (buttons.get(count - 10).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 1).getState() == false)
+						if (buttons.get(count - 1).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 1).getState() == false)
+						if (buttons.get(count + 1).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 10).getState() == false)
+						if (buttons.get(count + 10).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 11).getState() == false)
+						if (buttons.get(count + 11).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 12).getState() == false)
+						if (buttons.get(count + 12).getBackground() == Color.BLACK)
 						{
 							neighbors++;
 						}
+						buttons.get(count).setText(Integer.toString(neighbors));
+						neighbors = 0;
 					}
 				}
 				buttonStart.setText(Integer.toString(neighbors));
