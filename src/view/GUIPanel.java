@@ -19,12 +19,22 @@ public class GUIPanel extends JPanel
 	
 	ArrayList<CellButton> buttons = new ArrayList();
 	
+	int arraySize = 98;
+	boolean[] cellsToJudge;
+
 	private CellButton buttonStart;
 	private CellButton buttonEnd;
 	
 	public GUIPanel(Controller controller)
 	{
 		super();
+
+		cellsToJudge = new boolean[arraySize];
+		
+		for(int loop = 0; loop < arraySize; loop++)
+		{
+			cellsToJudge[loop] = false;
+		}
 		
 		try
 		{
@@ -130,54 +140,65 @@ public class GUIPanel extends JPanel
 				{
 					if (buttons.get(count).getBackground() == Color.WHITE)
 					{
-						if (buttons.get(count - 12).getBackground() == Color.BLACK)
+						if (buttons.get(count - 12).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 11).getBackground() == Color.BLACK)
+						if (buttons.get(count - 11).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 10).getBackground() == Color.BLACK)
+						if (buttons.get(count - 10).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count - 1).getBackground() == Color.BLACK)
+						if (buttons.get(count - 1).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 1).getBackground() == Color.BLACK)
+						if (buttons.get(count + 1).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 10).getBackground() == Color.BLACK)
+						if (buttons.get(count + 10).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 11).getBackground() == Color.BLACK)
+						if (buttons.get(count + 11).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
-						if (buttons.get(count + 12).getBackground() == Color.BLACK)
+						if (buttons.get(count + 12).getBackground() == Color.WHITE)
 						{
 							neighbors++;
 						}
 						buttons.get(count).setText(Integer.toString(neighbors));
+						
+						if (buttons.get(count).getState() == true)
+						{
+							if (neighbors < 2 || neighbors > 3)
+							{
+								buttons.get(count).setState(false);
+								setButtonColor();
+								buttons.get(count).setText(Integer.toString(neighbors));
+							}
+//							if (neighbors == 2 || neighbors == 3)
+//							{
+//								buttons.get(count).setState(true);
+//							}
+						}
+						
+//						if (buttons.get(count).getState() == false)
+//						{
+//							if (neighbors == 3)
+//							{
+//								buttons.get(count).setState(false);
+//							}
+//						}
+						
 						neighbors = 0;
 					}
 				}
-				buttonStart.setText(Integer.toString(neighbors));
-				
-				if (neighbors < 2 || neighbors > 3)
-				{
-					for(CellButton button : buttons)
-					{
-						((CellButton) click.getSource()).setState(false);
-						setButtonColor();
-					}
-				}
-				
-				
 			}
 		});
 		
