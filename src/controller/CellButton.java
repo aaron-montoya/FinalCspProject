@@ -9,6 +9,7 @@ public class CellButton extends JButton
 {
 	boolean state = false;
 	String text = "";
+	int pos = 0;
 	
 	private Controller appController;
 	private GUIPanel appPanel;
@@ -17,6 +18,7 @@ public class CellButton extends JButton
 	{
 		this.setText(text);
 		state = this.state;
+		pos = this.pos;
 	}
 	
 	public boolean getState()
@@ -27,5 +29,10 @@ public class CellButton extends JButton
 	public void setState(boolean state)
 	{
 		this.state = state;
+	}
+	
+	public int getPos()
+	{
+		return pos;
 	}
 }

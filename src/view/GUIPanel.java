@@ -20,7 +20,7 @@ public class GUIPanel extends JPanel
 	ArrayList<CellButton> buttons = new ArrayList();
 	
 	int arraySize = 98;
-	boolean[] cellsToJudge;
+	int[] cellsToJudge;
 
 	private CellButton buttonStart;
 	private CellButton buttonEnd;
@@ -29,11 +29,11 @@ public class GUIPanel extends JPanel
 	{
 		super();
 
-		cellsToJudge = new boolean[arraySize];
+		cellsToJudge = new int[arraySize];
 		
 		for(int loop = 0; loop < arraySize; loop++)
 		{
-			cellsToJudge[loop] = false;
+			cellsToJudge[loop] = 0;
 		}
 		
 		try
@@ -88,7 +88,7 @@ public class GUIPanel extends JPanel
 	{
 		for(int index = 0; index < 99; index++)
 		{
-			CellButton sample = new CellButton(1, false, Integer.toString(index));
+			CellButton sample = new CellButton(index, false, Integer.toString(index));
 			sample.setBackground(Color.BLACK);
 			sample.setOpaque(true);
 			buttons.add(sample);
@@ -138,67 +138,97 @@ public class GUIPanel extends JPanel
 				int neighbors = 0;
 				for(int count = 0; count < buttons.size(); count++)
 				{
-					if (buttons.get(count).getBackground() == Color.WHITE)
-					{
-						if (buttons.get(count - 12).getBackground() == Color.WHITE)
+					//if (buttons.get(count).getBackground() == Color.WHITE)
+					//{
+						if (buttons.get(count).getPos() > 10)
 						{
-							neighbors++;
+							if (buttons.get(count).getPos() > 11)
+							{
+								if (buttons.get(count - 12).getBackground() == Color.WHITE)
+								{
+									neighbors++;
+								}
+							}
+							if (buttons.get(count - 11).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+							if (buttons.get(count - 10).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
 						}
-						if (buttons.get(count - 11).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count - 10).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count - 1).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count + 1).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count + 10).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count + 11).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						if (buttons.get(count + 12).getBackground() == Color.WHITE)
-						{
-							neighbors++;
-						}
-						buttons.get(count).setText(Integer.toString(neighbors));
 						
+						if (buttons.get(count).getPos() != 0 || buttons.get(count).getPos() != 11 || buttons.get(count).getPos() != 22 || buttons.get(count).getPos() != 33 || buttons.get(count).getPos() != 44 || buttons.get(count).getPos() != 55 || buttons.get(count).getPos() != 66 || buttons.get(count).getPos() != 77 || buttons.get(count).getPos() != 88)
+						{
+							if (buttons.get(count - 1).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+						}
+						
+						if (buttons.get(count).getPos() != 10 || buttons.get(count).getPos() != 21 || buttons.get(count).getPos() != 32 || buttons.get(count).getPos() != 43 || buttons.get(count).getPos() != 54 || buttons.get(count).getPos() != 65 || buttons.get(count).getPos() != 76 || buttons.get(count).getPos() != 87 || buttons.get(count).getPos() != 98)
+						{
+							if (buttons.get(count + 1).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+						}
+						
+						if (buttons.get(count).getPos() < 88)
+						{
+							if (buttons.get(count + 10).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+							if (buttons.get(count + 11).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+							if (buttons.get(count + 12).getBackground() == Color.WHITE)
+							{
+								neighbors++;
+							}
+						}
+						
+						buttons.get(count).setText(Integer.toString(neighbors));
+											
 						if (buttons.get(count).getState() == true)
 						{
 							if (neighbors < 2 || neighbors > 3)
-							{
-								buttons.get(count).setState(false);
-								setButtonColor();
-								buttons.get(count).setText(Integer.toString(neighbors));
+							{			
+								cellsToJudge[count] = 2;
 							}
-//							if (neighbors == 2 || neighbors == 3)
-//							{
-//								buttons.get(count).setState(true);
-//							}
 						}
 						
-//						if (buttons.get(count).getState() == false)
-//						{
-//							if (neighbors == 3)
-//							{
-//								buttons.get(count).setState(false);
-//							}
-//						}
+						if (buttons.get(count).getState() == false)
+						{
+							if (neighbors == 3)
+							{
+								cellsToJudge[count] = 1;
+								buttons.get(count).setText(Integer.toString(1));
+							}
+						}
 						
 						neighbors = 0;
+					//}
+					
+				}
+				
+				for(int loop = 0; loop < arraySize; loop++)
+				{
+					if (cellsToJudge[loop] == 2)
+					{
+						buttons.get(loop).setState(false);
+						setButtonColor();
+					}
+					if (cellsToJudge[loop] == 1)
+					{
+						buttons.get(loop).setState(true);
+						setButtonColor();
 					}
 				}
+
 			}
 		});
 		
